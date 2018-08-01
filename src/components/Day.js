@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import {DayDiv,CalDate,DayOfWeek,Condition,Temp} from '../styles/Day';
 
-const imgURL = 'http://openweathermap.org/img/w/';
+const imgURL = 'https://openweathermap.org/img/w/';
 
 function convertWeather(kevin, isFahrenheit){
   if(isFahrenheit){
