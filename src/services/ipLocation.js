@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const getLocationFromIP = () => {
-  return axios.get('http://ip-api.com/json')
+  return axios.get('https://ip-api.com/json')
       .then((response) => {
         let {lat, lon} = response.data;
         return{lat, lon};
