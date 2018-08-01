@@ -8,7 +8,7 @@ const DumbApp = (props) => {
     return (
       <AppDiv>
         <Header>{`Five day forcast for: ${name}, ${country}`}</Header>
-        <FiveDay response={props.response} isFahrenheit={props.isFahrenheit}/>
+        <FiveDay response={props.response} isFahrenheit={country === 'US'}/>
       </AppDiv>
     );
   } else {

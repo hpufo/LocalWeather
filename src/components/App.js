@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import {API_KEY} from '../config';
-import axios from 'axios';
 import moment from 'moment';
 import DumbApp from './DumbApp';
+import getForcast from '../services/openWeatherMap';
+import getLocationFromIP from '../services/ipLocation';
 
-const url = 'http://api.openweathermap.org/data/2.5/forecast';
-//think about cases where I fail to get new data from the api but still have data cached
 class App extends Component {
   state = {
     message: 'loading...',
@@ -17,13 +15,14 @@ class App extends Component {
     if('geolocation' in navigator){
       navigator.geolocation.getCurrentPosition((position) => {
         let {latitude,longitude} = position.coords;
-        
-        if(!localStorage.getItem('response') || this.isOverTenMinsOld(this.getCachedResponse().timestamp)){
+        let cachedResponse = this.getCachedResponse();
+
+        if(!localStorage.getItem('response') || this.isOverTenMinsOld(cachedResponse.timestamp)){
           this.getAndSaveData(latitude,longitude);
         }
         else{
-          console.log('use cached');
-          this.setState({response: this.getCachedResponse(), message: ''});
+          console.log('using cached data');
+          this.setState({response: cachedResponse, message: ''});
         }
       },
       (error) => {
@@ -37,29 +36,34 @@ class App extends Component {
     }
   }
   ipLookup(){
-    return axios.get('http://ip-api.com/json')
+    getLocationFromIP()
       .then((response) => {
-        let {lat, lon} = response.data;
+        console.log('using ip location infomation');
+        let {lat, lon} = response;
         this.getAndSaveData(lat, lon);
       })
-      .catch((error) => {
-        this.setState({message: 'Couldnt get your location via geolocation and your IP address, you can\'t use this app without your location'});
-        //Inform the user that they are shit out of luck
+      .catch((e) => {
+        let cachedResponse = this.getCachedResponse();
+        if(cachedResponse){
+          this.setState({response: cachedResponse, message: ''});
+          console.log('API call failed, using cached data');
+        }
+        else{
+          this.setState({message: 'Couldnt get your location via geolocation and your IP address, you can\'t use this app without your location'});
+          console.log(e.message);
+        }
       });
   }
   getAndSaveData(latitude,longitude){
-    this.getData(latitude,longitude)
-          .then((json) => this.saveResponse(json));
-  }
-  getData(latitude,longitude){
-    console.log('fresh data');
-    return axios.get(`${url}?lat=${latitude}&lon=${longitude}&APPID=${API_KEY}`)
-      .then(response => response.data)
-      .catch(e => {
-        //Assed out if you get over here
-        this.setState({message: 'couldn\'t get forcast from API, check console for more details'});
-        console.log(e);
-      });
+    getForcast(latitude,longitude)
+          .then((json) => {
+            console.log('got data from API');
+            this.saveResponse(json)
+          })
+          .catch((e) => {
+            this.setState({message: 'couldn\'t get forcast from API, check console for more details'});
+            console.log(e.message);
+          });
   }
   isOverTenMinsOld(datetime){
     return moment(datetime).diff(moment(), 'minutes') <= -10;
