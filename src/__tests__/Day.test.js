@@ -16,7 +16,9 @@ function setup(date = "2018-07-31 18:00:00", isFahrenheit=true){
       temp: 299.47,
       temp_kf: -0.01,
       temp_max: 299.472,
-      temp_min: 299.47
+      temp_min: 299.47,
+      high_temp: 302.472,//85
+      low_temp: 297.47//76
     },
     sys: {pod: "d"},
     weather: [{
@@ -46,16 +48,15 @@ describe('Day', () => {
   });
   it('renders the icon', () => {
     const {wrapper,props} = setup();
-    expect(wrapper.find('img').prop('src')).toBe(`http://openweathermap.org/img/w/${props.weather[0].icon}.png`);
+    expect(wrapper.find('img').prop('src')).toBe(`https://openweathermap.org/img/w/${props.weather[0].icon}.png`);
     expect(wrapper.find('img').prop('alt')).toBe(props.weather[0].main);
-  });//*/
-  it('it converts the weather to fahrenheit', () => {
+  });
+  it('it converts the temp high to fahrenheit', () => {
     const {wrapper} = setup();
-    expect(wrapper.find('Temp').childAt(0).text()).toBe('79°F');
+    expect(wrapper.find('High').childAt(0).text()).toBe('85°F');
   });
-  it('it converts the weather to celsius', () => {
+  it('it converts the temp low to celsius', () => {
     const {wrapper} = setup("2018-07-31 18:00:00", false);
-    expect(wrapper.find('Temp').childAt(0).text()).toBe('26°C');
+    expect(wrapper.find('Low').childAt(0).text()).toBe('24°C');
   });
-  //it('', () => {});
 });

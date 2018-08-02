@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import {DayDiv,CalDate,DayOfWeek,Condition,Temp} from '../styles/Day';
+import {DayDiv,CalDate,DayOfWeek,Condition,High,Low} from '../styles/Day';
 
 const imgURL = 'https://openweathermap.org/img/w/';
 
@@ -12,7 +12,6 @@ function convertWeather(kevin, isFahrenheit){
 }
 
 const Day = (props) => {
-  //console.log('props: ',props)
   let {dt_txt,weather,main} = props;
   let date = moment(dt_txt);
   return (
@@ -20,7 +19,8 @@ const Day = (props) => {
       <CalDate>{date.format('MM/DD')}</CalDate>
       <DayOfWeek>{date.isSame(moment(), 'day') ? 'Today':date.toLocaleString().substring(0,3)}</DayOfWeek>
       <Condition><img src={`${imgURL}${weather[0].icon}.png`} alt={weather[0].main}/></Condition>
-      <Temp>{convertWeather(main.temp_max,props.isFahrenheit)}</Temp>
+      <High>{convertWeather(main.high_temp,props.isFahrenheit)}</High>
+      <Low>{convertWeather(main.low_temp,props.isFahrenheit)}</Low>
     </DayDiv>
   );
 }
