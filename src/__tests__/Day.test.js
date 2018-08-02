@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import Day from '../components/Day';
 import {shallow} from 'enzyme';
 
@@ -46,6 +47,10 @@ describe('Day', () => {
   it('day of the week is abbreviated', () => {
     const {wrapper} = setup();
     expect(wrapper.find('DayOfWeek').childAt(0).text()).toBe('Tue');
+  });
+  it('day of the week is today', () => {
+    const {wrapper} = setup(moment().toISOString());
+    expect(wrapper.find('DayOfWeek').childAt(0).text()).toBe('Today');
   });
   it('renders the icon', () => {
     const {wrapper,props} = setup();
