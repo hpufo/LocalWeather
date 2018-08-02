@@ -40,8 +40,8 @@ describe('Day', () => {
   it('date is in MM/DD format and is the correct date', () => {
     const {wrapper} = setup();
     //Check to see if the date is in MM/DD format and is in the valid range
-    expect(wrapper.find('CalDate').childAt(0).text()).toMatch(/^(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])$/);
-    expect(wrapper.find('CalDate').childAt(0).text()).toBe('07/31');
+    expect(wrapper.find('CalDate').childAt(0).text()).toMatch(/^(0?[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])$/);
+    expect(wrapper.find('CalDate').childAt(0).text()).toBe('7/31');
   });
   it('day of the week is abbreviated', () => {
     const {wrapper} = setup();

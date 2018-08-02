@@ -1,18 +1,18 @@
 import React from 'react';
-//import FiveDay from '../components/FiveDay';
 import {shallow} from 'enzyme';
 import DumbApp from '../components/DumbApp';
 
 const defaultResponse = {
-  "city":{
-  "id":5110302,
-  "name":"Brooklyn",
-  "coord":{
-    "lat":40.6501,
-    "lon":-73.9496
+  list: [],
+  city:{
+  id:5110302,
+  name:"Brooklyn",
+  coord:{
+    lat:40.6501,
+    lon:-73.9496
   },
-  "country":"US",
-  "population":2300664
+  country:"US",
+  population:2300664
   }
 };
 
@@ -34,7 +34,7 @@ describe('DumbApp', () => {
     expect(wrapper.find('Header').childAt(0).text()).toBe('Five day forcast for: Brooklyn, US');
   });
   it('renders the message when there is no data', () => {
-    const {wrapper} = setup({});
+    const {wrapper} = setup({list: []});
     expect(wrapper.find('Message').childAt(0).text()).toBe('test');
   });
 });

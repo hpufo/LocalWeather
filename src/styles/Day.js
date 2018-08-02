@@ -18,15 +18,14 @@ CalDate.displayName = 'CalDate';
 
 export const DayOfWeek = styled.div`
 font-size: ${fontSize};
+margin: .2em 0 0.2em 0px;
 `;
 DayOfWeek.displayName = 'DayOfWeek';
 
 export const Condition = styled.div`
 font-size: ${fontSize};
-img{
   width: 100%;
   height: auto;
-}
 `;
 Condition.displayName = 'Condition';
 

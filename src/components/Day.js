@@ -21,10 +21,9 @@ function convertWeather(kevin, isFahrenheit){
 const Day = (props) => {
   let {dt_txt,weather,main} = props;
   let date = moment(dt_txt);
-  console.log(props)
   return (
     <DayDiv>
-      <CalDate>{date.format('MM/DD')}</CalDate>
+      <CalDate>{date.format('M/DD')}</CalDate>
       <DayOfWeek>{date.isSame(moment(), 'day') ? 'Today':date.toLocaleString().substring(0,3)}</DayOfWeek>
       <Condition><img src={`${imgURL}${weather[0].icon}.png`} alt={weather[0].main}/></Condition>
       <High>{convertWeather(main.high_temp,props.isFahrenheit)}</High>

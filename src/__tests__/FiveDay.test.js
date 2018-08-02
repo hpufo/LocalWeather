@@ -16,7 +16,6 @@ describe('FiveDay', () => {
   });
   it('renders five days', () => {
     const {wrapper} = setup();
-    //console.log(wrapper.find(Day).debug())
     expect(wrapper.find(Day).length).toBe(5);
   });
   //it('', () => {});
