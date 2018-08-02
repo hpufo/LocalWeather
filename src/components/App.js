@@ -5,6 +5,7 @@ import getForcast from '../services/openWeatherMap';
 import getLocationFromIP from '../services/ipLocation';
 
 class App extends Component {
+  //Init state
   state = {
     message: 'loading...',
     response: {},
@@ -12,11 +13,11 @@ class App extends Component {
   };
 
   componentDidMount(){
-    if('geolocation' in navigator){
+    if('geolocation' in navigator){                                         //Feature detect geolocation
       navigator.geolocation.getCurrentPosition((position) => {
         let {latitude,longitude} = position.coords;
         let cachedResponse = this.getCachedResponse();
-
+        //If the response isn't in local storage or the response in storage is over 10 mins old
         if(!localStorage.getItem('response') || this.isOverTenMinsOld(cachedResponse.timestamp)){
           this.getAndSaveData(latitude,longitude);
         }
@@ -25,16 +26,19 @@ class App extends Component {
           this.setState({response: cachedResponse, message: ''});
         }
       },
-      (error) => {
+      (error) => {          //Failed to get user location via geolocation
         this.setState('couldn\'t get location attempting to find through IP');
         this.ipLookup()
       });
     }
-    else{
+    else{       //geolocation is not avaiable
       this.setState({message: 'geolocation is not enabled on this browser, attempting to get location from IP'});
       this.ipLookup()
     }
   }
+  /**
+   * @description attempt to get the user's IP address from their IP address
+   */
   ipLookup(){
     getLocationFromIP()
       .then((response) => {
@@ -54,6 +58,11 @@ class App extends Component {
         }
       });
   }
+  /**
+   * @description tries to get the data from the OpenWeatherAPI and save it to local storage
+   * @param {number} latitude 
+   * @param {number} longitude 
+   */
   getAndSaveData(latitude,longitude){
     getForcast(latitude,longitude)
           .then((json) => {
@@ -65,15 +74,31 @@ class App extends Component {
             console.log(e.message);
           });
   }
+  /**
+   * @description checks the datetime passed was over 10 minutes ago
+   * @param {*} datetime a datetime
+   * @returns {boolean}
+   */
   isOverTenMinsOld(datetime){
     return moment(datetime).diff(moment(), 'minutes') <= -10;
   }
+  /**
+   * @description update the state with the response and adds it to local storage
+   * @param {object} json the json response from the api
+   */
   saveResponse(json){
+    //append a timestamp to know if 10 mins have passed since you last got a response
     json.timestamp = moment();
     this.setState({response: json});
+    //turns the json response to a string so it can be saved in local storage
     localStorage.setItem('response', JSON.stringify(json));
   }
+  /**
+   * @description gets the response from localStorage
+   * @returns {object} json response
+   */
   getCachedResponse(){
+    //Gets the response from local storage and parse it back into json
     return JSON.parse(localStorage.getItem('response'));
   }
   render() {

@@ -17,8 +17,8 @@ function setup(date = "2018-07-31 18:00:00", isFahrenheit=true){
       temp_kf: -0.01,
       temp_max: 299.472,
       temp_min: 299.47,
-      high_temp: 302.472,//85
-      low_temp: 297.47//76
+      high_temp: 302.472,//85F
+      low_temp: 297.47//76F
     },
     sys: {pod: "d"},
     weather: [{
@@ -39,6 +39,7 @@ describe('Day', () => {
   });
   it('date is in MM/DD format and is the correct date', () => {
     const {wrapper} = setup();
+    //Check to see if the date is in MM/DD format and is in the valid range
     expect(wrapper.find('CalDate').childAt(0).text()).toMatch(/^(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])$/);
     expect(wrapper.find('CalDate').childAt(0).text()).toBe('07/31');
   });
