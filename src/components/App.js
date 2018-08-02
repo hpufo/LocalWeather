@@ -47,13 +47,14 @@ class App extends Component {
         this.getAndSaveData(lat, lon);
       })
       .catch((e) => {
+        console.log(e.message);
         let cachedResponse = this.getCachedResponse();
         if(cachedResponse){
           this.setState({response: cachedResponse, message: ''});
-          console.log('API call failed, using cached data');
+          console.log('Failed to get location through IP, using cached data');
         }
         else{
-          this.setState({message: 'Couldnt get your location via geolocation and your IP address, you can\'t use this app without your location'});
+          this.setState({message: 'Couldnt get your location via geolocation and your IP address, and you have no weather data saved. Sorry you can\'t use this app.'});
           console.log(e.message);
         }
       });
