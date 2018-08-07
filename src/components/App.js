@@ -27,7 +27,7 @@ class App extends Component {
         }
       },
       (error) => {          //Failed to get user location via geolocation
-        this.setState('couldn\'t get location attempting to find through IP');
+        this.setState({message: 'couldn\'t get location attempting to find through IP'});
         this.ipLookup()
       });
     }
