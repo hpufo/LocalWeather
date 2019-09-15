@@ -83,7 +83,7 @@ const App = () => {
       setMessage('geolocation is not enabled on this browser, attempting to get location from IP');
       ipLookup()
     }
-  });
+  },[]);
   
   if(response.city){
     let {name,country} = response.city;
