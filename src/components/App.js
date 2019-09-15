@@ -14,7 +14,7 @@ const App = () => {
   const saveResponse = (json) => {
     //append a timestamp to know if 10 mins have passed since you last got a response
     json.timestamp = moment();
-    setResponse(response);
+    setResponse(json);
     //turns the json response to a string so it can be saved in local storage
     localStorage.setItem('response', JSON.stringify(json));
     console.log('response saved');
